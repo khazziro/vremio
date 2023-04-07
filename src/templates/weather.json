@@ -1,0 +1,46 @@
+{
+  "coord": {
+    "lon": 21.9333,
+    "lat": 47.0667
+  },
+  "weather": [
+    {
+      "id": 500,
+      "main": "Rain",
+      "description": "light rain",
+      "icon": "10d"
+    }
+  ],
+  "base": "stations",
+  "main": {
+    "temp": 277.06,
+    "feels_like": 277.06,
+    "temp_min": 277.06,
+    "temp_max": 277.17,
+    "pressure": 1016,
+    "humidity": 87
+  },
+  "visibility": 10000,
+  "wind": {
+    "speed": 1.03,
+    "deg": 0
+  },
+  "rain": {
+    "1h": 0.1
+  },
+  "clouds": {
+    "all": 75
+  },
+  "dt": 1680869905,
+  "sys": {
+    "type": 2,
+    "id": 50396,
+    "country": "RO",
+    "sunrise": 1680840023,
+    "sunset": 1680887295
+  },
+  "timezone": 10800,
+  "id": 671768,
+  "name": "Oradea",
+  "cod": 200
+}
