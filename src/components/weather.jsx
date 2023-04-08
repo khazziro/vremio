@@ -11,7 +11,6 @@ const Weather = () => {
     if (event.key === "Enter") {
       axios.get(url).then((r) => {
         setData(r.data);
-        console.log(r.data);
       });
       setLocation("");
     }
@@ -25,7 +24,7 @@ const Weather = () => {
           value={location}
           onChange={(event) => setLocation(event.target.value)}
           onKeyDown={searchLocation}
-          placeholder="Enter Location"
+          placeholder="Enter Location(ex: London)"
         />
       </div>
       <div className="w-full my-4 mx-auto">
