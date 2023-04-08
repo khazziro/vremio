@@ -10,7 +10,7 @@ const Weather = () => {
     if (location !== "") {
       axios
         .get(
-          `https://wft-geo-db.p.rapidapi.com/v1/geo/cities?namePrefix=${location}&sort=-name`,
+          `https://wft-geo-db.p.rapidapi.com/v1/geo/cities?namePrefix=${location}&sort=-name&limit=3`,
           {
             headers: {
               "X-RapidAPI-Key":
@@ -58,7 +58,9 @@ const Weather = () => {
     <div className="flex flex-col justify-around container max-w-screen-md h-full relative m-auto p-4 overflow-y-hidden">
       <div className="search text-center relative ">
         <input
-          className="py-3 px-5 w-full outline-none rounded-t-3xl bg-white bg-opacity-20 placeholder:text-white"
+          className={`py-3 px-5 w-full outline-none bg-white bg-opacity-20 placeholder:text-white ${
+            suggestions.length > 0 ? "rounded-t-3xl" : "rounded-3xl"
+          } `}
           value={location}
           onChange={handleInputChange}
           onKeyDown={handleKeyPress}
@@ -66,7 +68,7 @@ const Weather = () => {
         />
 
         {suggestions.length > 0 && (
-          <ul className="absolute right-0 z-10 w-full origin-top-right rounded-b-3xl bg-white bg-opacity-20 focus:outline-none">
+          <ul className="absolute right-0 z-10 w-full origin-top-right rounded-b-3xl bg-white backdrop-blur-sm bg-opacity-20 focus:outline-none">
             {suggestions.map((location, index) => (
               <li
                 className="block px-4 py-2 text-sm"
