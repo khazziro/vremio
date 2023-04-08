@@ -5,6 +5,7 @@ const Weather = () => {
   const [data, setData] = useState({});
   const [location, setLocation] = useState("");
   const [suggestions, setSuggestions] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     let timer;
@@ -12,7 +13,7 @@ const Weather = () => {
       timer = setTimeout(() => {
         axios
           .get(
-            `https://wft-geo-db.p.rapidapi.com/v1/geo/cities?namePrefix=${location}&sort=-name&limit=3`,
+            `https://wft-geo-db.p.rapidapi.com/v1/geo/cities?namePrefix=${location}&sort=-population&limit=3`,
             {
               headers: {
                 "X-RapidAPI-Key":
@@ -40,21 +41,28 @@ const Weather = () => {
     setLocation(event.target.value);
   };
 
-  const handleSuggestionClick = (location) => {
+  const handleSuggestionClick = async (location) => {
+    setLoading(true);
     setLocation(location);
     setSuggestions([]);
+
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=4775d45af32f6ca2bc8c28c6e6d79cb0`;
+    try {
+      const res = await axios.get(url);
+      setData(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+
+    setLoading(false);
   };
 
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
-      const url = ` https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=4775d45af32f6ca2bc8c28c6e6d79cb0`;
-      axios.get(url).then((r) => {
-        setData(r.data);
+      axios.get(url).then((res) => {
+        setData(res.data);
       });
-
-      if (event.key === "Enter") {
-        setLocation("");
-      }
+      setLocation("");
     }
   };
 
@@ -70,7 +78,7 @@ const Weather = () => {
           onKeyDown={handleKeyPress}
           placeholder="Enter Location(ex: London)"
         />
-
+        {loading && <p>Loading...</p>}
         {suggestions.length > 0 && (
           <ul className="absolute right-0 z-10 w-full origin-top-right rounded-b-3xl bg-white backdrop-blur-sm bg-opacity-20 focus:outline-none">
             {suggestions.map((location, index) => (
