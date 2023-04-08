@@ -17,7 +17,7 @@ const Weather = () => {
   };
 
   return (
-    <div className="flex flex-col justify-between container max-w-screen-md h-full relative m-auto p-4 ">
+    <div className="flex flex-col justify-around container max-w-screen-md h-full relative m-auto p-4 overflow-y-hidden">
       <div className="search contents text-center">
         <input
           className="py-3 px-5 rounded-3xl bg-white bg-opacity-20 placeholder:text-white"
