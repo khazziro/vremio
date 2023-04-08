@@ -4,10 +4,32 @@ import axios from "axios";
 const Weather = () => {
   const [data, setData] = useState({});
   const [location, setLocation] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
 
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=4775d45af32f6ca2bc8c28c6e6d79cb0`;
+  const searchSuggestions = (event) => {
+    const query = event.target.value;
+    const url = `https://wft-geo-db.p.rapidapi.com/v1/geo/cities?namePrefix=${query}&limit=3`;
+
+    axios
+      .get(url, {
+        headers: {
+          "X-RapidAPI-Key":
+            "d2b65efed7mshaa2e1e2c4603002p18bfd7jsna19e6ad982f6",
+          "X-RapidAPI-Host": "wft-geo-db.p.rapidapi.com",
+        },
+      })
+      .then((r) => {
+        const suggestions = r.data.data.map((city) => city.name);
+        setSuggestions(suggestions);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const searchLocation = (event) => {
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=4775d45af32f6ca2bc8c28c6e6d79cb0`;
+
     if (event.key === "Enter") {
       axios.get(url).then((r) => {
         setData(r.data);
@@ -24,6 +46,7 @@ const Weather = () => {
           value={location}
           onChange={(event) => setLocation(event.target.value)}
           onKeyDown={searchLocation}
+          onInput={searchSuggestions}
           placeholder="Enter Location(ex: London)"
         />
       </div>
