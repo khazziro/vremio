@@ -57,15 +57,6 @@ const Weather = () => {
     setLoading(false);
   };
 
-  const handleKeyPress = (event) => {
-    if (event.key === "Enter") {
-      axios.get(url).then((res) => {
-        setData(res.data);
-      });
-      setLocation("");
-    }
-  };
-
   return (
     <div className="flex flex-col justify-around container max-w-screen-md h-full relative m-auto p-4 overflow-y-hidden">
       <div className="search text-center relative ">
@@ -75,12 +66,11 @@ const Weather = () => {
           } `}
           value={location}
           onChange={handleInputChange}
-          onKeyDown={handleKeyPress}
           placeholder="Enter Location(ex: London)"
         />
         {loading && <p>Loading...</p>}
         {suggestions.length > 0 && (
-          <ul className="absolute right-0 z-10 w-full origin-top-right rounded-b-3xl bg-white backdrop-blur-sm bg-opacity-20 focus:outline-none">
+          <ul className="absolute right-0 z-10 w-full origin-top-right rounded-b-3xl bg-white backdrop-blur-sm bg-opacity-20 cursor-pointer focus:outline-none">
             {suggestions.map((location, index) => (
               <li
                 className="block px-4 py-2 text-sm"
@@ -123,7 +113,9 @@ const Weather = () => {
             <p className="text-base">Humidity</p>
           </div>
           <div className="text-xl">
-            {data.wind ? <p className="font-bold">{data.wind.speed}</p> : null}
+            {data.wind ? (
+              <p className="font-bold">{data.wind.speed} M/S</p>
+            ) : null}
             <p className="text-base">Wind Speed</p>
           </div>
         </div>
