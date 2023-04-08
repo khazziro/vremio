@@ -7,29 +7,33 @@ const Weather = () => {
   const [suggestions, setSuggestions] = useState([]);
 
   useEffect(() => {
+    let timer;
     if (location !== "") {
-      axios
-        .get(
-          `https://wft-geo-db.p.rapidapi.com/v1/geo/cities?namePrefix=${location}&sort=-name&limit=3`,
-          {
-            headers: {
-              "X-RapidAPI-Key":
-                "d2b65efed7mshaa2e1e2c4603002p18bfd7jsna19e6ad982f6",
-              "X-RapidAPI-Host": "wft-geo-db.p.rapidapi.com",
-            },
-          }
-        )
-        .then((res) => {
-          const data = res.data.data;
-          const location = data.map((city) => city.name);
-          setSuggestions(location);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      timer = setTimeout(() => {
+        axios
+          .get(
+            `https://wft-geo-db.p.rapidapi.com/v1/geo/cities?namePrefix=${location}&sort=-name&limit=3`,
+            {
+              headers: {
+                "X-RapidAPI-Key":
+                  "d2b65efed7mshaa2e1e2c4603002p18bfd7jsna19e6ad982f6",
+                "X-RapidAPI-Host": "wft-geo-db.p.rapidapi.com",
+              },
+            }
+          )
+          .then((res) => {
+            const data = res.data.data;
+            const location = data.map((city) => city.name);
+            setSuggestions(location);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }, 1000); // Delay the API call by 1000ms
     } else {
       setSuggestions([]);
     }
+    return () => clearTimeout(timer); // Cleanup function to clear the timer
   }, [location]);
 
   const handleInputChange = (event) => {
