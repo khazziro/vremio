@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 const Weather = () => {
@@ -6,49 +6,78 @@ const Weather = () => {
   const [location, setLocation] = useState("");
   const [suggestions, setSuggestions] = useState([]);
 
-  const searchSuggestions = (event) => {
-    const query = event.target.value;
-    const url = `https://wft-geo-db.p.rapidapi.com/v1/geo/cities?namePrefix=${query}&limit=3`;
+  useEffect(() => {
+    if (location !== "") {
+      axios
+        .get(
+          `https://wft-geo-db.p.rapidapi.com/v1/geo/cities?namePrefix=${location}&sort=-name`,
+          {
+            headers: {
+              "X-RapidAPI-Key":
+                "d2b65efed7mshaa2e1e2c4603002p18bfd7jsna19e6ad982f6",
+              "X-RapidAPI-Host": "wft-geo-db.p.rapidapi.com",
+            },
+          }
+        )
+        .then((res) => {
+          const data = res.data.data;
+          const location = data.map((city) => city.name);
+          setSuggestions(location);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      setSuggestions([]);
+    }
+  }, [location]);
 
-    axios
-      .get(url, {
-        headers: {
-          "X-RapidAPI-Key":
-            "d2b65efed7mshaa2e1e2c4603002p18bfd7jsna19e6ad982f6",
-          "X-RapidAPI-Host": "wft-geo-db.p.rapidapi.com",
-        },
-      })
-      .then((r) => {
-        const suggestions = r.data.data.map((city) => city.name);
-        setSuggestions(suggestions);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  const handleInputChange = (event) => {
+    setLocation(event.target.value);
   };
 
-  const searchLocation = (event) => {
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=4775d45af32f6ca2bc8c28c6e6d79cb0`;
+  const handleSuggestionClick = (location) => {
+    setLocation(location);
+    setSuggestions([]);
+  };
 
+  const handleKeyPress = (event) => {
     if (event.key === "Enter") {
+      const url = ` https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=4775d45af32f6ca2bc8c28c6e6d79cb0`;
       axios.get(url).then((r) => {
         setData(r.data);
       });
-      setLocation("");
+
+      if (event.key === "Enter") {
+        setLocation("");
+      }
     }
   };
 
   return (
     <div className="flex flex-col justify-around container max-w-screen-md h-full relative m-auto p-4 overflow-y-hidden">
-      <div className="search contents text-center">
+      <div className="search text-center relative ">
         <input
-          className="py-3 px-5 rounded-3xl bg-white bg-opacity-20 placeholder:text-white"
+          className="py-3 px-5 w-full outline-none rounded-t-3xl bg-white bg-opacity-20 placeholder:text-white"
           value={location}
-          onChange={(event) => setLocation(event.target.value)}
-          onKeyDown={searchLocation}
-          onInput={searchSuggestions}
+          onChange={handleInputChange}
+          onKeyDown={handleKeyPress}
           placeholder="Enter Location(ex: London)"
         />
+
+        {suggestions.length > 0 && (
+          <ul className="absolute right-0 z-10 w-full origin-top-right rounded-b-3xl bg-white bg-opacity-20 focus:outline-none">
+            {suggestions.map((location, index) => (
+              <li
+                className="block px-4 py-2 text-sm"
+                key={index}
+                onClick={() => handleSuggestionClick(location)}
+              >
+                {location}
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
       <div className="w-full my-4 mx-auto">
         <div>
