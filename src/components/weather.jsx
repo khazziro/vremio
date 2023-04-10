@@ -9,7 +9,7 @@ const Weather = () => {
 
   useEffect(() => {
     let timer;
-    if (location !== "") {
+    if (location !== "" && location !== data.name) {
       timer = setTimeout(() => {
         axios
           .get(
@@ -45,6 +45,8 @@ const Weather = () => {
     setLoading(true);
     setLocation(location);
     setSuggestions([]);
+
+    console.log(location);
 
     const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=4775d45af32f6ca2bc8c28c6e6d79cb0`;
     try {
