@@ -24,10 +24,8 @@ const Weather = () => {
           )
           .then((res) => {
             const data = res.data.data;
-            // console.log(data);
-            // const location = data.map((city) => city.name);
+
             const location = [...new Set(data.map((city) => city.name))];
-            // console.log(location);
             setSuggestions(location);
           })
           .catch((err) => {
