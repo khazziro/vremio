@@ -24,7 +24,10 @@ const Weather = () => {
           )
           .then((res) => {
             const data = res.data.data;
-            const location = data.map((city) => city.name);
+            // console.log(data);
+            // const location = data.map((city) => city.name);
+            const location = [...new Set(data.map((city) => city.name))];
+            // console.log(location);
             setSuggestions(location);
           })
           .catch((err) => {
@@ -45,8 +48,6 @@ const Weather = () => {
     setLoading(true);
     setLocation(location);
     setSuggestions([]);
-
-    console.log(location);
 
     const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=4775d45af32f6ca2bc8c28c6e6d79cb0`;
     try {
