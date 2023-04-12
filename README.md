@@ -7,10 +7,7 @@ You can preview the site at this link: https://vremio.netlify.app/
 ## Features
 - Search for a city and get current weather information
 - Displays temperature, humidity, wind speed, and weather description
-- Uses TailWindCSS for styling
-- Built with ReactJS and uses Axios for fetching data
-- Bundled with Vite for faster development and build times
-- Uses Yarn Package Manager for dependency management
+
 ## How to Use
 - Clone the repository and navigate to the project directory.
 - Install dependencies by running `yarn install` in the terminal.
@@ -18,7 +15,12 @@ You can preview the site at this link: https://vremio.netlify.app/
 - Open your browser and navigate to http://localhost:5173 to access the app.
 - Enter a city name in the search bar and click wanted location from the dropdown.
 - View the current weather information for the selected city.
-
+## Technologies Used
+- ReactJS
+- Vite
+- Tailwind CSS
+- OpenWeather API
+- Axios
 ## Screenshots
 ![image](https://user-images.githubusercontent.com/93095948/231435363-4f312d6d-46fc-4324-8b53-4b440f45d31e.png)
 ## Contributing
